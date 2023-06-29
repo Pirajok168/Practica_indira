@@ -1,9 +1,13 @@
 package ru.android.practica_indira.ui.theme
 
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
@@ -31,4 +35,10 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val Shapes = Shapes(
+    medium = RoundedCornerShape(32.dp),
+    large = RoundedCornerShape(40.dp),
+    extraSmall = RoundedCornerShape(10.dp),
 )
