@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
@@ -28,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -47,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,7 +62,7 @@ import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-enum class RepairTypeSelect (val type: String){
+enum class RepairTypeSelect(val type: String) {
     CHANGE_OF_OIL("Замена масла"),
     CAR_WIPERS("Дворники"),
     GLASS_REPLACEMENT("Замена стекла"),
@@ -114,7 +117,7 @@ fun AddCarSecondStepScreen() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .padding(top = 48.dp)
-                        .padding(horizontal = 37.dp)
+                        .padding(horizontal = 37.dp),
                 )
                 {
                     Text(
@@ -140,7 +143,11 @@ fun AddCarSecondStepScreen() {
                                 letterSpacing = 2.sp,
                                 color = Color(0xFF59576D),
                                 textAlign = TextAlign.Right,
-                                modifier = Modifier.padding(top = 9.dp, bottom = 12.dp, start = 16.dp)
+                                modifier = Modifier.padding(
+                                    top = 9.dp,
+                                    bottom = 12.dp,
+                                    start = 16.dp
+                                )
                             )
                             Text(
                                 text = "км",
@@ -155,7 +162,8 @@ fun AddCarSecondStepScreen() {
                         menuName = "Вид ремонта",
                         modifier = Modifier.padding(top = 114.dp)
                     )
-                    MyDateDialog()
+                    MyDateDialog(modifier = Modifier.padding(top = 8.dp))
+                    MileageSurface(modifier = Modifier.padding(top = 8.dp))
 
                 }
             }
@@ -206,7 +214,7 @@ fun AddTypeRepair(
                             .padding(16.dp)
                             .menuAnchor()
                     )
-                    Icon(Icons.Default.ArrowDropDown, contentDescription = null,)
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = null)
                 }
             }
             ExposedDropdownMenu(
@@ -257,7 +265,7 @@ fun AddTypeRepair(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyDateDialog() {
+fun MyDateDialog(modifier: Modifier = Modifier) {
 
     var openDialog by remember {
         mutableStateOf(false)
@@ -273,15 +281,17 @@ fun MyDateDialog() {
     Surface(
         color = Color(0xFFF7F7F7),
         shape = MaterialTheme.shapes.extraSmall,
-        modifier = Modifier.padding(top = 8.dp)
+        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = dateItem,
-            modifier = Modifier.padding(start = 16.dp))
+            Text(
+                text = dateItem,
+                modifier = Modifier.padding(start = 16.dp)
+            )
             IconButton(onClick = { openDialog = true }) {
                 Icon(Icons.Default.DateRange, contentDescription = null)
             }
@@ -290,9 +300,11 @@ fun MyDateDialog() {
     if (openDialog) {
         DatePickerDialog(
             onDismissRequest = { openDialog = false },
-            confirmButton = { TextButton(onClick = { openDialog = false }) {
-                Text(text = "Ok")
-            } }
+            confirmButton = {
+                TextButton(onClick = { openDialog = false }) {
+                    Text(text = "Ok")
+                }
+            }
         ) {
             DatePicker(state = datePickerState)
         }
@@ -300,19 +312,49 @@ fun MyDateDialog() {
 }
 
 @Composable
-fun MileageSurface() {
-
+fun MileageSurface(modifier: Modifier = Modifier) {
+    var mileageValue by remember {
+        mutableStateOf("")
+    }
 
     Surface(
         color = Color(0xFFF7F7F7),
         shape = MaterialTheme.shapes.extraSmall,
+        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            OutlinedTextField(
+                value = mileageValue,
+                onValueChange = { it -> mileageValue = it },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFF7F7F7),
+                    unfocusedBorderColor = Color(0xFFF7F7F7)
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        text = "Пробег",
+                        fontSize = 15.sp,
+                        color = Color(0xFF2C2948)
+                    )
+                },
+                trailingIcon = {
+                    Text(
+                        text = "км",
+                        fontSize = 15.sp,
+                        color = Color(0xFF2C2948)
+                    )
+                },
+            )
 
         }
+
+
     }
 }
+
