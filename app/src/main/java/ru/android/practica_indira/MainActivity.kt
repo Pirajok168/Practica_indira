@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import kotlinx.coroutines.launch
 import ru.android.practica_indira.main_screen.ui.MainScreen
+import ru.android.practica_indira.repair.history.ui.HistoryRepairScreen
 import ru.android.practica_indira.repair.ui.UpcomingRepairScreen
 import ru.android.practica_indira.ui.theme.AppTheme
 
@@ -40,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    UpcomingRepairScreen()
+                    HistoryRepairScreen()
                 }
             }
         }

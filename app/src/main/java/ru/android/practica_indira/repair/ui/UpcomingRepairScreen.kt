@@ -52,7 +52,9 @@ data class TypeRepair(
     val description: String,
     val icon: Int,
     val now: Float,
-    val max: Float
+    val max: Float,
+    val cost: String,
+    val date: String
 )
 val testColor = listOf<Color>(
     Color.Blue,
@@ -67,56 +69,72 @@ val testList = listOf(
         description = "Замена масла",
         icon = R.drawable.vector_2,
         now = 1000f,
-        max = 1442f
+        max = 1442f,
+        cost = "₽5тыс.",
+        date = "01.02.2023"
     ),
     TypeRepair(
         type = "Подвеска",
         description = "Стойки амортизаторв",
         icon = R.drawable.pendant,
         now = 1000f,
-        max = 2442f
+        max = 2442f,
+        cost = "₽54тыс.",
+        date = "01.02.2023"
     ),
     TypeRepair(
         type = "Подвеска",
         description = "Сайлент блоки",
         icon = R.drawable.pendant,
         now = 1000f,
-        max = 2942f
+        max = 2942f,
+        cost = "₽1тыс.",
+        date = "05.02.2022"
     ),
     TypeRepair(
         type = "Подвеска",
         description = "Шаровая опора",
         icon = R.drawable.pendant,
         now = 1000f,
-        max = 2442f
+        max = 2442f,
+        cost = "₽5тыс.",
+        date = "01.02.2023"
     ),
     TypeRepair(
         type = "Двигатель",
         description = "Замена масла",
         icon = R.drawable.vector_2,
         now = 1000f,
-        max = 1442f
+        max = 1442f,
+        cost = "₽6тыс.",
+        date = "10.10.2023"
     ),
     TypeRepair(
         type = "Подвеска",
         description = "Стойки амортизаторв",
         icon = R.drawable.pendant,
         now = 1000f,
-        max = 2442f
+        max = 2442f,
+        cost = "₽66тыс.",
+        date = "10.10.2023"
     ),
     TypeRepair(
         type = "Подвеска",
         description = "Сайлент блоки",
         icon = R.drawable.pendant,
         now = 1000f,
-        max = 2942f
+        max = 2942f,
+        cost = "₽76тыс.",
+        date = "9.10.2020"
     ),
     TypeRepair(
         type = "Подвеска",
         description = "Шаровая опора",
         icon = R.drawable.pendant,
         now = 1000f,
-        max = 2442f
+        max = 2442f,
+        cost = "₽6тыс.",
+        date = "10.10.2023"
     ),
 )
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -170,7 +188,7 @@ fun UpcomingRepairScreen(){
 }
 
 @Composable
-fun Lag(calculateBottomPadding: Dp) {
+private fun Lag(calculateBottomPadding: Dp) {
     Surface(
         modifier = Modifier.height(150.dp),
         shape = RoundedCornerShape(
@@ -185,7 +203,7 @@ fun Lag(calculateBottomPadding: Dp) {
                 .padding(horizontal = 20.dp),
             shape = MaterialTheme.shapes.extraSmall
         ) {
-            Text(text = "История ремонта",
+            Text(text = "История ремонта",fontSize = 17.sp,
                 modifier = Modifier
                     .padding(horizontal = 100.dp, vertical = 10.dp)
             )
@@ -208,7 +226,8 @@ fun Body(calculateTopPadding: Dp) {
             ) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)) {
+                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
 
                     Icon(painter = painterResource(id = it.icon), contentDescription = "")
                     Spacer(modifier = Modifier.padding(end = 16.dp))
