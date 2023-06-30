@@ -117,12 +117,10 @@ fun AddCarFirstStepScreen() {
                     Text(text = "Данные вашего автомобиля",
                         fontSize = 15.sp,
                         color = Color(0xCC1C1939),
-                        textAlign = TextAlign.Center
                         )
                     Text(text = "Шаг 1/2",
                         fontSize = 15.sp,
                         color = Color(0xCC1C1939),
-                        textAlign = TextAlign.Center,
                         modifier = Modifier.padding(top = 12.dp)
                     )
                 }
