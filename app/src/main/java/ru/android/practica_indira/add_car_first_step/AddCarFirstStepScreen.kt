@@ -41,6 +41,44 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
+interface Car {
+
+}
+
+
+interface Tayota: Car {
+     val nameModel: String
+     val year: Int
+     val powerEngine: Int
+     val volumeEngine: Int
+     val fuel: String
+     val KPP: String
+     val привод: String
+     val mark: String
+}
+
+data class  Mark(
+    override val year: Int = 1999,
+    override val powerEngine: Int = 5566,
+    override val volumeEngine: Int = 1231,
+    override val fuel: String = "Бензин",
+    override val KPP: String = "Автоматическая",
+    override val привод: String = "Задний",
+    override val nameModel: String = "Mark",
+    override val mark: String = "Tayota"
+) : Tayota
+
+data class  Allion(
+    override val year: Int = 1999,
+    override val powerEngine: Int = 5566,
+    override val volumeEngine: Int = 1231,
+    override val fuel: String = "Бензин",
+    override val KPP: String = "Автоматическая",
+    override val привод: String = "Передний",
+    override val nameModel: String = "Allion", override val mark: String = "Tayota"
+) : Tayota
+
+val test = listOf<Car>(Mark(), Allion())
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Preview
 @Composable
@@ -86,34 +124,36 @@ fun AddCarFirstStepScreen() {
                     ) {
                     AddCarMenu(
                         menuName = "Марка автомобиля", 
-                        modifier = Modifier.padding(top = 48.dp)
+                        modifier = Modifier.padding(top = 48.dp),
+                        test
                     )
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .padding(top = 4.dp)
                     ) {
-                        AddCarMenu(menuName = "Модель", Modifier.weight(5f))
+                        AddCarMenu(menuName = "Модель", Modifier.weight(5f), test)
                         Spacer(modifier = Modifier.padding(4.dp))
-                        AddCarMenu(menuName = "Год", Modifier.weight(2f))
+                        AddCarMenu(menuName = "Год", Modifier.weight(2f), test)
                     }
                     AddCarMenu(
                         menuName = "Мощность двигателя",
-                        modifier = Modifier.padding(top = 16.dp)
+                        modifier = Modifier.padding(top = 16.dp), test
                         )
                     AddCarMenu(
                         menuName = "Объём двигателя",
-                        modifier = Modifier.padding(top = 4.dp))
+                        modifier = Modifier.padding(top = 4.dp),test)
                     AddCarMenu(
                         menuName = "Топливо",
-                        modifier = Modifier.padding(top = 4.dp))
+                        modifier = Modifier.padding(top = 4.dp),test)
                     AddCarMenu(
                         menuName = "КПП",
-                        modifier = Modifier.padding(top = 16.dp)
+                        modifier = Modifier.padding(top = 16.dp),
+                        test
                     )
                     AddCarMenu(
                         menuName = "Привод",
-                        modifier = Modifier.padding(top = 4.dp))
+                        modifier = Modifier.padding(top = 4.dp),test)
 
                 }
             }
@@ -142,9 +182,8 @@ fun AddCarFirstStepScreen() {
 @Composable
 fun AddCarMenu(
     menuName: String,
-    modifier: Modifier = Modifier
-    /*dropDownItems: List<DropDownItem>,
-    onItemClick: (DropDownItem) -> Unit*/
+    modifier: Modifier = Modifier,
+    listItem: List<Car>
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -183,22 +222,16 @@ fun AddCarMenu(
                 }
 
             }
-            /*TextField(
-                value = item,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
-                },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-                modifier = Modifier.menuAnchor(),
-                placeholder = { Text(text = menuName)}
-            )*/
             ExposedDropdownMenu(
                 expanded = isExpanded,
                 onDismissRequest = { isExpanded = false }
             ) {
-                DropdownMenuItem(text = { /*TODO*/ }, onClick = { /*TODO*/ })
+                listItem.forEach {itemMenu ->
+                    (itemMenu as? Tayota)?.let {
+                        DropdownMenuItem(text = { Text(text = it.mark) }, onClick = { item = it.mark })
+                    }
+                }
+
             }
         }
     }
