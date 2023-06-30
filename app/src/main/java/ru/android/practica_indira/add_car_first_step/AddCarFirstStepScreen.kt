@@ -45,6 +45,16 @@ interface Car {
 
 }
 
+enum class TypeSelect{
+    MARK_AUTO,
+    MODEL,
+    YEAR,
+    POWER_ENGINE,
+    VOLUME_ENGINE,
+    FUEL,
+    KPP,
+    DRIVE,
+}
 
 interface Tayota: Car {
      val nameModel: String
@@ -70,10 +80,10 @@ data class  Mark(
 
 data class  Allion(
     override val year: Int = 1999,
-    override val powerEngine: Int = 5566,
+    override val powerEngine: Int = 5561,
     override val volumeEngine: Int = 1231,
     override val fuel: String = "Бензин",
-    override val KPP: String = "Автоматическая",
+    override val KPP: String = "Механическая",
     override val привод: String = "Передний",
     override val nameModel: String = "Allion", override val mark: String = "Tayota"
 ) : Tayota
@@ -125,35 +135,54 @@ fun AddCarFirstStepScreen() {
                     AddCarMenu(
                         menuName = "Марка автомобиля", 
                         modifier = Modifier.padding(top = 48.dp),
-                        test
+                        test,
+                        TypeSelect.MARK_AUTO
                     )
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .padding(top = 4.dp)
                     ) {
-                        AddCarMenu(menuName = "Модель", Modifier.weight(5f), test)
+                        AddCarMenu(menuName = "Модель", Modifier.weight(5f),
+                            test,
+                            TypeSelect.MODEL
+                        )
                         Spacer(modifier = Modifier.padding(4.dp))
-                        AddCarMenu(menuName = "Год", Modifier.weight(2f), test)
+                        AddCarMenu(menuName = "Год", Modifier.weight(2f),
+                            test,
+                            TypeSelect.YEAR
+                        )
                     }
                     AddCarMenu(
                         menuName = "Мощность двигателя",
-                        modifier = Modifier.padding(top = 16.dp), test
+                        modifier = Modifier.padding(top = 16.dp),
+                        test,
+                        TypeSelect.POWER_ENGINE
                         )
                     AddCarMenu(
                         menuName = "Объём двигателя",
-                        modifier = Modifier.padding(top = 4.dp),test)
+                        modifier = Modifier.padding(top = 4.dp),
+                        test,
+                        TypeSelect.VOLUME_ENGINE
+                    )
                     AddCarMenu(
                         menuName = "Топливо",
-                        modifier = Modifier.padding(top = 4.dp),test)
+                        modifier = Modifier.padding(top = 4.dp),
+                        test,
+                        TypeSelect.FUEL
+                    )
                     AddCarMenu(
                         menuName = "КПП",
                         modifier = Modifier.padding(top = 16.dp),
-                        test
+                        test,
+                        TypeSelect.KPP
                     )
                     AddCarMenu(
                         menuName = "Привод",
-                        modifier = Modifier.padding(top = 4.dp),test)
+                        modifier = Modifier.padding(top = 4.dp),
+                        test,
+                        TypeSelect.DRIVE
+                    )
 
                 }
             }
@@ -183,7 +212,8 @@ fun AddCarFirstStepScreen() {
 fun AddCarMenu(
     menuName: String,
     modifier: Modifier = Modifier,
-    listItem: List<Car>
+    listItem: List<Car>,
+    typeItem: TypeSelect
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -224,12 +254,38 @@ fun AddCarMenu(
             }
             ExposedDropdownMenu(
                 expanded = isExpanded,
-                onDismissRequest = { isExpanded = false }
+                onDismissRequest = { isExpanded = false },
+                modifier = Modifier.fillMaxWidth()
             ) {
-                listItem.forEach {itemMenu ->
-                    (itemMenu as? Tayota)?.let {
-                        DropdownMenuItem(text = { Text(text = it.mark) }, onClick = { item = it.mark })
+                listItem.forEach {
+                        itemMenu ->
+                    val text = when (typeItem) {
+                        TypeSelect.MARK_AUTO -> {
+                            (itemMenu as? Tayota)?.mark ?: ""
+                        }
+                        TypeSelect.MODEL -> {
+                            (itemMenu as? Tayota)?.nameModel ?: ""
+                        }
+                        TypeSelect.YEAR -> {
+                            (itemMenu as? Tayota)?.year.toString() ?: ""
+                        }
+                        TypeSelect.POWER_ENGINE -> {
+                            (itemMenu as? Tayota)?.powerEngine.toString() ?: ""
+                        }
+                        TypeSelect.VOLUME_ENGINE -> {
+                            (itemMenu as? Tayota)?.volumeEngine.toString() ?: ""
+                        }
+                        TypeSelect.FUEL -> {
+                            (itemMenu as? Tayota)?.fuel ?: ""
+                        }
+                        TypeSelect.KPP -> {
+                            (itemMenu as? Mark)?.KPP ?: (itemMenu as? Allion)?.KPP ?: ""
+                        }
+                        TypeSelect.DRIVE -> {
+                            (itemMenu as? Tayota)?.привод ?: ""
+                        }
                     }
+                    DropdownMenuItem(text = { Text(text = text) }, onClick = { item = text })
                 }
 
             }
