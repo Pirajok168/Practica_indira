@@ -58,7 +58,9 @@ enum class TypeCard{
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onRepairScreen: () -> Unit
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -82,9 +84,9 @@ fun MainScreen() {
                     modifier = Modifier.padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Body(Color.Blue, TypeCard.One, 442f, 540f)
+                    Body(Color.Blue, TypeCard.One, 442f, 540f, onRepairScreen)
 
-                    Body(Color.Red, TypeCard.One, 1442f, 2400f)
+                    Body(Color.Red, TypeCard.One, 1442f, 2400f, onRepairScreen)
                 }
 
             }
@@ -95,9 +97,9 @@ fun MainScreen() {
                     modifier = Modifier.padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Body(Color.Red, TypeCard.Two)
+                    Body(Color.Red, TypeCard.Two, onRepairScreen = onRepairScreen)
 
-                    Body(Color.Red, TypeCard.Three)
+                    Body(Color.Red, TypeCard.Three, onRepairScreen = onRepairScreen)
                 }
 
             }
@@ -108,9 +110,14 @@ fun MainScreen() {
 
 @Composable
 fun Body(color: Color,typeCard: TypeCard,now: Float=0f,
-         max: Float=0f,) {
+         max: Float=0f, onRepairScreen: () -> Unit) {
     
-    InfoCard(color, typeCard, now, max)
+    InfoCard(color, typeCard, now, max){
+        when(it){
+            TypeCard.Three -> onRepairScreen()
+            else -> {}
+        }
+    }
 
 }
 
@@ -121,9 +128,12 @@ fun InfoCard(
     typeCard: TypeCard,
     now: Float=0f,
     max: Float=0f,
+    onRepairScreen: (TypeCard) -> Unit
 ) {
     Card(
-        onClick = {  },
+        onClick = {
+            onRepairScreen(typeCard)
+        },
         modifier = Modifier.requiredSize(180.dp, 170.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {

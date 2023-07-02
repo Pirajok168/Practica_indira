@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -56,13 +57,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import ru.android.practica_indira.R
+import ru.android.practica_indira.add_car_second_step.AddTypeRepair
+import ru.android.practica_indira.add_car_second_step.MileageSurface
+import ru.android.practica_indira.add_car_second_step.MyDateDialog
 import ru.android.practica_indira.repair.ui.testColor
 import ru.android.practica_indira.repair.ui.testList
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryRepairScreen() {
+fun HistoryRepairScreen(
+    onBack: () -> Unit
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -70,7 +76,7 @@ fun HistoryRepairScreen() {
                     Text(text = "История ремонта ремонт")
                 },
                 navigationIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = ""
@@ -295,31 +301,29 @@ private fun Lag(calculateBottomPadding: Dp) {
     ) {
         Column() {
             AnimatedVisibility(visible = addClick) {
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth()
                         .padding(top = 37.dp)
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color(0xFFF7F7F7),
                         shape = MaterialTheme.shapes.extraSmall
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = "Вид ремонта",
-
-                                modifier = Modifier
-                                    .padding(16.dp)
-                            )
-                            Icon(Icons.Default.ArrowDropDown, contentDescription = null,)
-                        }
-
+                        AddTypeRepair(
+                            menuName = "Вид ремонта",
+                            modifier = Modifier
+                        )
                     }
+
+
+                    MyDateDialog()
+
+                    MileageSurface(
+                        text = "Стоимость ремонта", subtext = "₽"
+                    )
                 }
 
             }

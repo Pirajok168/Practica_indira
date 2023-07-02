@@ -71,23 +71,11 @@ enum class RepairTypeSelect(val type: String) {
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-@Preview
 @Composable
-fun AddCarSecondStepScreen() {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                modifier = Modifier.padding(top = 113.dp),
-                title = {
-                    Text(
-                        text = "Пробег и ремонт",
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight(700),
-                    )
-                }
-            )
-        },
-    ) { innerPadding ->
+fun AddCarSecondStepScreen(
+    onNext: () -> Unit
+) {
+    Scaffold() { innerPadding ->
         LazyColumn(
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding(),
@@ -96,6 +84,13 @@ fun AddCarSecondStepScreen() {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            item {
+                Text(text = "Пробег и ремонт",
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight(700),
+                    modifier = Modifier.padding(top = 113.dp),
+                )
+            }
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally)
                 {
@@ -163,8 +158,25 @@ fun AddCarSecondStepScreen() {
                         modifier = Modifier.padding(top = 114.dp)
                     )
                     MyDateDialog(modifier = Modifier.padding(top = 8.dp))
-                    MileageSurface(modifier = Modifier.padding(top = 8.dp))
+                    MileageSurface(modifier = Modifier.padding(top = 8.dp),
+                        text = "Пробег", subtext = "км")
 
+                }
+            }
+
+            item {
+                Button(
+                    onClick = onNext,
+                    modifier = Modifier
+                        .padding(horizontal = 37.dp)
+                        .padding(top = 50.dp),
+                    shape = MaterialTheme.shapes.extraSmall
+                ) {
+                    Text(
+                        text = "Готово",
+                        modifier = Modifier
+                            .padding(horizontal = 100.dp, vertical = 10.dp)
+                    )
                 }
             }
         }
@@ -214,7 +226,10 @@ fun AddTypeRepair(
                             .padding(16.dp)
                             .menuAnchor()
                     )
-                    Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                    IconButton(onClick = { isExpanded = true }) {
+                        Icon(Icons.Default.ArrowDropDown, contentDescription = null,)
+                    }
+
                 }
             }
             ExposedDropdownMenu(
@@ -312,7 +327,8 @@ fun MyDateDialog(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MileageSurface(modifier: Modifier = Modifier) {
+fun MileageSurface(modifier: Modifier = Modifier,
+                   text: String, subtext: String) {
     var mileageValue by remember {
         mutableStateOf("")
     }
@@ -338,14 +354,14 @@ fun MileageSurface(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
-                        text = "Пробег",
+                        text = text,
                         fontSize = 15.sp,
                         color = Color(0xFF2C2948)
                     )
                 },
                 trailingIcon = {
                     Text(
-                        text = "км",
+                        text = subtext,
                         fontSize = 15.sp,
                         color = Color(0xFF2C2948)
                     )

@@ -90,19 +90,11 @@ data class  Allion(
 
 val test = listOf<Car>(Mark(), Allion())
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-@Preview
 @Composable
-fun AddCarFirstStepScreen() {
+fun AddCarFirstStepScreen(
+    onNext: () -> Unit
+) {
     Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                modifier = Modifier.padding(top = 113.dp),
-                title = { Text(text = "Добавить авто",
-                    fontSize = 36.sp,
-                    fontWeight = FontWeight(700),
-                    ) }
-            )
-        },
     ) {innerPadding ->
         LazyColumn(contentPadding = PaddingValues(
             top = innerPadding.calculateTopPadding(),
@@ -111,6 +103,13 @@ fun AddCarFirstStepScreen() {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            item {
+                Text(text = "Добавить авто",
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight(700),
+                    modifier = Modifier.padding(top = 113.dp),
+                )
+            }
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally)
                 {
@@ -186,7 +185,7 @@ fun AddCarFirstStepScreen() {
             }
             item { 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = onNext,
                     modifier = Modifier
                         .padding(horizontal = 37.dp)
                         .padding(top = 50.dp),

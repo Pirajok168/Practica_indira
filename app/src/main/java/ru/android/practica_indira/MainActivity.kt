@@ -23,7 +23,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import ru.android.practica_indira.add_car_first_step.AddCarFirstStepScreen
+import ru.android.practica_indira.add_car_second_step.AddCarSecondStepScreen
 import ru.android.practica_indira.main_screen.ui.MainScreen
 import ru.android.practica_indira.repair.history.ui.HistoryRepairScreen
 import ru.android.practica_indira.repair.ui.UpcomingRepairScreen
@@ -41,8 +46,40 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HistoryRepairScreen()
+                    Navigation()
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun Navigation() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "AddCardFirstStepScreen") {
+        composable("AddCardFirstStepScreen"){
+            AddCarFirstStepScreen(
+                onNext = {
+                    navController.navigate("AddCardSecongStepScreen")
+                }
+            )
+        }
+
+        composable("AddCardSecongStepScreen"){
+            AddCarSecondStepScreen(){
+                navController.navigate("MainScreen")
+            }
+        }
+
+        composable("MainScreen"){
+            MainScreen(){
+                navController.navigate("RepairScreen")
+            }
+        }
+
+        composable("RepairScreen"){
+            HistoryRepairScreen(){
+                navController.popBackStack()
             }
         }
     }
